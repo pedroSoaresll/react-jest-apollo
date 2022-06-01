@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { usePokemons } from './hooks';
 
 function App() {
+  const { data, loading, error } = usePokemons({ limit: 2 })
+
+  if (error) return <p>Error to load data</p>
+
+  if (loading) return <p>Loading...</p>
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ul>
+        {data?.pokemons.results.map(pokemon => (
+          <div key={pokemon.id}>
+            <li>
+              <img src={pokemon.image} alt={pokemon.name} />
+            </li>
+            <li>{pokemon.id}</li>
+            <li>{pokemon.name}</li>
+          </div>
+        ))}
+      </ul>
     </div>
   );
 }
